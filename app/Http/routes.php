@@ -24,13 +24,22 @@ Route::get('about', function () {
 	$staff = [
 
 				['name'=>'nehal', 'age'=>22],
-				['name'=>'kamina', 'age'=>12],
+				['name'=>'sandy', 'age'=>14],
+				['name'=>'kamina']
+
+			];
+
+	$comments = [
+
+				['heading'=>'great product', 'comment' => 'i love this thing!'],
+				['heading'=>'<h1>hello<h1/>', 'comment' => '<h3>text<h3/>'],
 
 			];
 
     return view('about')->with([
     		'title'=>$title,
     		'metaDesc' =>$metaDesc,
-    		'staff' => $staff
+    		'staff' => $staff,
+    		'comments' => $comments
     	]);
 });
