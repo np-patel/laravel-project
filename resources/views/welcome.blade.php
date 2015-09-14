@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('layouts.master')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-    </head>
+@section('title', 'Home Page')
 
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">custome Welcome</div>
-            </div>
-        </div>
-    </body>
-</html>
+@section('meta-desc', 'its my home page')
+
+@section('content')
+<h1>Home Page</h1>
+@endsection
