@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::get('about', 'AboutController@index');
 Route::get('about/create', 'AboutController@create');
+Route::post('about', 'AboutController@store');

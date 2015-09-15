@@ -19,7 +19,10 @@
 					    	@else
 					    	Child.
 			    	@endif
-				
+					
+					@else
+					(no age provided)
+
 				@endif
 			</li>
 		@endforeach
@@ -36,7 +39,7 @@
 
 	@forelse ($comments as $comment)
 	    <div>
-	    	{{$comment['heading']}}
+	    	{{$comment['heading']}} {{-- this is filtering and read as it is --}}
 	    	<br/>
 	    	{!!$comment['comment']!!}  {{-- {!! !!} this is forcing to use html or javascript code on page --}}
 	    </div>
