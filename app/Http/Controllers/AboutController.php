@@ -73,9 +73,16 @@ class AboutController extends Controller
 
         //validation pass
 
-        //return $request->first_name; //just saw form enter field name
+        //$staff = new \App\Staff();
 
-        return $request;
+        //$staff->first_name = $request->first_name;
+        //$staff->last_name = $request->last_name;
+
+        //$staff->save();
+
+        \App\Staff::create($request->all());
+
+        return redirect('about');
     }
 
     /**
