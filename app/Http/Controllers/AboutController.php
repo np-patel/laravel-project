@@ -20,28 +20,9 @@ class AboutController extends Controller
         //create some data
     $title = 'about page';
     $metaDesc = 'its an about us page';
-    // $staff = ['nehal', 'bob', 'july', 'kamina'];
-    $staff = [
+    
 
-                ['name'=>'nehal', 'age'=>22],
-                ['name'=>'sandy', 'age'=>14],
-                ['name'=>'kamina']
-
-            ];
-
-    $comments = [
-
-                ['heading'=>'great product', 'comment' => 'i love this thing!'],
-                ['heading'=>'<h1>hello<h1/>', 'comment' => '<h3>text<h3/>'],
-
-            ];
-
-    return view('about.index')->with([
-            'title'=>$title,
-            'metaDesc' =>$metaDesc,
-            'staff' => $staff,
-            'comments' => $comments
-        ]);
+        return view('about.index', compact('title', 'metaDesc'));
     }
 
     /**
