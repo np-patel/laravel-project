@@ -70,14 +70,23 @@ class AboutController extends Controller
         $fileName = 'staff-'.uniqid().'.'.$fileExtension;
 
         //move file in to its destination
-        $request->file('profile_image')->move('img/staff', $fileName);
+        $request->file('profile_image')->move('img/staff/', $fileName);
+
+        \Image::make('img/staff/'.$fileName)->resize(240, null, 
+            function ($constraint) {
+                $constraint->aspectRatio();
+            })->save('img/staff/'.$fileName);
+
+        //Extract the form data
+        $input = $request->all();
 
         //insert slug into the request
-        $request['slug'] = str_slug( $request->first_name.' '.$request->last_name );
+        $input['slug'] = str_slug( $request->first_name.' '.$request->last_name );
 
+        $input['profile_image'] = $fileName;
         
         //add in to database
-        $staffMember = \App\Staff::create($request->all());
+        $staffMember = \App\Staff::create($input);
 
         return redirect('about/'.$staffMember->slug);
     }

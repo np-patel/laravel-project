@@ -10,6 +10,10 @@
 
 	<p>Age: {{ $staffMember->age}}</p>
 
+	<img src="/img/staff/{{$staffMember->profile_image}}" alt="Image">
+
+	<br>
+
 	<a href="{{ url('about/'.$staffMember->slug.'/edit') }}">Change Details</a>
 
 @endsection
