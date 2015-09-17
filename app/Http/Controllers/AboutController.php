@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+
 class AboutController extends Controller
 {
     /**
@@ -21,8 +22,9 @@ class AboutController extends Controller
     $title = 'about page';
     $metaDesc = 'its an about us page';
     
+    $allStaff = \App\Staff::all();
 
-        return view('about.index', compact('title', 'metaDesc'));
+        return view('about.index', compact('title', 'metaDesc', 'allStaff'));
     }
 
     /**
@@ -61,9 +63,11 @@ class AboutController extends Controller
 
         //$staff->save();
 
-        \App\Staff::create($request->all());
+        $request['slug'] = str_slug( $request->first_name.' '.$request->last_name );
 
-        return redirect('about');
+        $staffMember = \App\Staff::create($request->all());
+
+        return redirect('about/'.$staffMember->slug);
     }
 
     /**
@@ -72,9 +76,11 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $staffMember = \App\Staff::where('slug', $slug)->firstOrFail();
+
+        return view('about.show', compact('staffMember')); 
     }
 
     /**
@@ -83,9 +89,14 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+
+        $staffMember = \App\Staff::where('slug', $slug)->firstOrFail();
+
+        return view('about.edit', compact('staffMember')); 
+
+        return $slug;
     }
 
     /**
