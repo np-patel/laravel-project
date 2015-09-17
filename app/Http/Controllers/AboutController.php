@@ -50,7 +50,9 @@ class AboutController extends Controller
         $this->validate( $request, [
 
                 'first_name' => 'required|min:2|max:20',
-                'last_name' => 'required|min:2|max:30'
+                'last_name' => 'required|min:2|max:30',
+                'age' => 'required|between:0,130|integer',
+                'profile_image' => 'required|image|between:1,2000'
 
             ]);
 
@@ -63,8 +65,18 @@ class AboutController extends Controller
 
         //$staff->save();
 
+        $fileExtension = $request->file('profile_image')->getClientOriginalExtension();
+
+        $fileName = 'staff-'.uniqid().'.'.$fileExtension;
+
+        //move file in to its destination
+        $request->file('profile_image')->move('img/staff', $fileName);
+
+        //insert slug into the request
         $request['slug'] = str_slug( $request->first_name.' '.$request->last_name );
 
+        
+        //add in to database
         $staffMember = \App\Staff::create($request->all());
 
         return redirect('about/'.$staffMember->slug);
@@ -106,9 +118,30 @@ class AboutController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+      //validation
+        $this->validate( $request, [
+
+                'first_name' => 'required|min:2|max:20',
+                'last_name' => 'required|min:2|max:30',
+                'age' => 'required|between:0,130|integer'
+
+            ]);
+
+        //Find the staff member to edit
+        $staffMember = \App\Staff::where('slug', $slug)->firstOrFail();
+
+        $staffMember->first_name = $request->first_name;
+        $staffMember->last_name = $request->last_name;
+        $staffMember->age = $request->age;
+
+        $staffMember->slug = str_slug( $request->first_name.' '.$request->last_name );
+
+        $staffMember->save();
+
+        return redirect('about/'.$staffMember->slug);
+
     }
 
     /**

@@ -15,7 +15,7 @@
 </p>
 
 
-	<form action="{{ url('about') }}" method="post">
+	<form action="{{ url('about') }}" method="post" novlidate enctype="multipart/form-data">
 
 	{{ csrf_field() }}
 
@@ -30,6 +30,18 @@
 		<label for="last_name">Last Name: </label>
 		<input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}">
 		{{ $errors->first('last_name') }}
+	</div>
+
+	<div>
+		<label for="age">Age: </label>
+		<input type="text" id="age" name="age" value="{{ old('age') }}" min="0" max="130" step="1">
+		{{ $errors->first('age') }}
+	</div>
+
+	<div>
+		<label for="profile_image">Profile Image: </label>
+		<input type="file" id="profile_image" name="profile_image">
+		{{ $errors->first('profile_image') }}
 	</div>
 		
 	<input type="submit" value="Add Staff">
