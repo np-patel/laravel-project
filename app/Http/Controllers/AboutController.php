@@ -134,7 +134,8 @@ class AboutController extends Controller
 
                 'first_name' => 'required|min:2|max:20',
                 'last_name' => 'required|min:2|max:30',
-                'age' => 'required|between:0,130|integer'
+                'age' => 'required|between:0,130|integer',
+                'profile_image' => 'image|between:1,2000'
 
             ]);
 
@@ -146,6 +147,30 @@ class AboutController extends Controller
         $staffMember->age = $request->age;
 
         $staffMember->slug = str_slug( $request->first_name.' '.$request->last_name );
+
+        //if the user provided the new image
+        if ( $request->hasFile('profile_image') ) {
+            
+            //generate a new file name and extention
+            $fileExtension = $request->file('profile_image')->getClientOriginalExtension();
+
+            $fileName = 'staff-'.uniqid().'.'.$fileExtension;
+
+            //move file in to its destination
+            $request->file('profile_image')->move('img/staff/', $fileName);
+
+            \Image::make('img/staff/'.$fileName)->resize(240, null, 
+                function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save('img/staff/'.$fileName);
+
+            //delete the old image
+            \File::Delete('img/staff/'.$staffMember->profile_image);
+
+            //tell the database of the new image
+            $staffMember->profile_image = $fileName;
+
+        }
 
         $staffMember->save();
 
