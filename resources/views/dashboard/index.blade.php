@@ -9,4 +9,6 @@
 		<li>Account Created {{  \Carbon\Carbon::now()->diffForHumans(Auth::user()->created_at, true) }} ago</li>
 	</ul>
 
+	@include('dashboard.change_password')
+
 @endsection

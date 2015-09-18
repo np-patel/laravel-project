@@ -10,6 +10,10 @@ use Auth;
 
 class DashboardController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +23,45 @@ class DashboardController extends Controller
     {
         // return Auth::user()->name;
         return view('dashboard.index');
+    }
+
+    public function changePassword(Request $request){
+
+        $validator = \Validator::make($request->all(), [
+
+                'current_password' => 'required',
+                'password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required|min:8'
+
+            ]);
+
+        //make sure the current password is same as the password in the database
+
+        $validator->after(function($validator) use($request){
+
+            if (!Auth::attempt([ 'email'=>Auth::user()->email, 'password'=>$request->current_password ])) {
+                $validator->errors()->add('current_password', 'Incorrect Password');
+            }
+
+        });
+
+        //if the validation faild
+        if ($validator->fails()) {
+            return redirect('dashboard')->withErrors($validator);
+        }
+
+        //change the user password
+
+        $user = \App\User::find(Auth::user()->id);
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        //prepare the flash message
+        \Session::flash('password_change', 'Your password has been change successfully');
+
+
+        return redirect('dashboard');
+
     }
 
     /**

@@ -34,3 +34,4 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 
  Route::resource('dashboard', 'DashboardController');
+ Route::post('dashboard/change_password', 'DashboardController@changePassword');
